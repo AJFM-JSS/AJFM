@@ -90,7 +90,7 @@ jobs:
           mkdir -p /home/${{ secrets.EC2_USERNAME }}/ajfm
           cd /home/${{ secrets.EC2_USERNAME }}/ajfm
           
-          # Create docker-compose.yml (removed version as it's obsolete)
+          # Create docker-compose.yml (using port 5000 to match security group)
           cat > docker-compose.yml << 'EOF'
           services:
             app:
