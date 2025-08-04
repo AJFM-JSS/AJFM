@@ -73,8 +73,12 @@ jobs:
           if ! command -v docker &> /dev/null; then
             curl -fsSL https://get.docker.com -o get-docker.sh
             sudo sh get-docker.sh
-            sudo usermod -aG docker $USER
           fi
+          
+          # Add user to docker group and start docker service
+          sudo usermod -aG docker $USER
+          sudo systemctl start docker
+          sudo systemctl enable docker
           
           # Install Docker Compose if not already installed
           if ! command -v docker-compose &> /dev/null; then
@@ -86,10 +90,8 @@ jobs:
           mkdir -p /home/${{ secrets.EC2_USERNAME }}/ajfm
           cd /home/${{ secrets.EC2_USERNAME }}/ajfm
           
-          # Create docker-compose.yml
+          # Create docker-compose.yml (removed version as it's obsolete)
           cat > docker-compose.yml << 'EOF'
-          version: '3.8'
-          
           services:
             app:
               image: ajfmregistry/ajfm:latest
@@ -108,13 +110,13 @@ jobs:
           EOF
           
           # Stop and remove existing containers
-          docker-compose down || true
+          sudo docker-compose down || true
           
           # Pull latest image
-          docker pull ajfmregistry/ajfm:latest
+          sudo docker pull ajfmregistry/ajfm:latest
           
           # Start the application
-          docker-compose up -d
+          sudo docker-compose up -d
           
           # Clean up old images
-          docker image prune -f 
+          sudo docker image prune -f 
