@@ -25,6 +25,11 @@ jobs:
         echo "DOCKER_USERNAME first char: ${DOCKER_USERNAME:0:1}"
         echo "DOCKER_USERNAME last char: ${DOCKER_USERNAME: -1}"
         echo "Using Docker Hub username: ajfmregistry"
+        echo "EC2_HOST: $EC2_HOST"
+        echo "EC2_USERNAME: $EC2_USERNAME"
+        echo "EC2_PORT: $EC2_PORT"
+        echo "EC2_PRIVATE_KEY starts with: ${EC2_PRIVATE_KEY:0:50}..."
+        echo "EC2_PRIVATE_KEY ends with: ...${EC2_PRIVATE_KEY: -50}"
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
