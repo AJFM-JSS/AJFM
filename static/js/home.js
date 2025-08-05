@@ -4,61 +4,41 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Home page loaded, initializing components');
-    
-    // Load testimonials from API
+    // Load testimonials
     loadTestimonials();
     
-    // Initialize interactive elements
-    initializeInteractiveElements();
+    // Initialize Lucide icons
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
 });
 
-/**
- * Load testimonials from API and display them
- */
-function loadTestimonials() {
-    fetch('/api/testimonials')
-        .then(response => response.json())
-        .then(testimonials => {
-            const container = document.getElementById('testimonials-container');
-            if (!container) {
-                console.warn('Testimonials container not found');
-                return;
-            }
-            
-            testimonials.forEach(testimonial => {
-                const testimonialHtml = `
-                    <div class="bg-background shadow-card-custom hover:shadow-elegant transition-all duration-300 rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            ${Array(testimonial.rating).fill().map(() => '<i data-lucide="star" class="w-5 h-5 text-yellow-500 fill-current"></i>').join('')}
-                        </div>
-                        <blockquote class="text-muted-foreground mb-4">
-                            "${testimonial.content}"
-                        </blockquote>
-                        <div class="flex items-center gap-3">
-                            <img 
-                                src="${testimonial.image}" 
-                                alt="${testimonial.name}"
-                                class="w-12 h-12 rounded-full object-cover"
-                            />
-                            <div>
-                                <div class="font-semibold text-foreground">${testimonial.name}</div>
-                                <div class="text-sm text-muted-foreground">${testimonial.role}</div>
-                            </div>
-                        </div>
+async function loadTestimonials() {
+    try {
+        const response = await fetch('/api/testimonials');
+        const testimonials = await response.json();
+        
+        const container = document.getElementById('testimonials-container');
+        if (!container) return;
+        
+        container.innerHTML = testimonials.map(testimonial => `
+            <div class="bg-white rounded-lg p-6 shadow-card-custom hover:shadow-card-hover transition-shadow-smooth">
+                <div class="flex items-center mb-4">
+                    <div class="flex text-yellow-400">
+                        ${'★'.repeat(testimonial.rating)}${'☆'.repeat(5 - testimonial.rating)}
                     </div>
-                `;
-                container.innerHTML += testimonialHtml;
-            });
-            
-            // Initialize Lucide icons for testimonials
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        })
-        .catch(error => {
-            console.error('Error loading testimonials:', error);
-        });
+                </div>
+                <p class="text-gray-700 mb-4 italic">"${testimonial.content}"</p>
+                <div class="border-t border-gray-200 pt-4">
+                    <div class="font-semibold text-gray-900">${testimonial.name}</div>
+                    <div class="text-sm text-gray-600">${testimonial.role} at ${testimonial.company}</div>
+                </div>
+            </div>
+        `).join('');
+        
+    } catch (error) {
+        console.error('Error loading testimonials:', error);
+    }
 }
 
 /**

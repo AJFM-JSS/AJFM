@@ -1,41 +1,33 @@
 {% extends "base.html" %}
 
-{% block title %}Apply Boost Studio - We Apply to Jobs For You{% endblock %}
+{% block title %}AJFM - Job application made easy | We Apply to Jobs For You{% endblock %}
 
 {% block content %}
 <div class="min-h-screen">
   <!-- Hero Section -->
   <section class="relative bg-gradient-hero py-20 lg:py-32 overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary-light/80"></div>
-    <div class="absolute inset-0">
-      <img 
-        src="{{ url_for('static', filename='images/hero-professionals.jpg') }}" 
-        alt="Professional team" 
-        class="w-full h-full object-cover opacity-20"
-      />
-    </div>
+    <div class="absolute inset-0 bg-gradient-to-r from-primary-600/90 to-primary-700/80"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <div class="text-center lg:text-left">
-          <span class="inline-block bg-white/20 text-white border border-white/30 px-3 py-1 rounded-full text-sm mb-4">
+          <span class="inline-flex items-center bg-white/20 text-white border border-white/30 px-4 py-2 rounded-full text-sm mb-6">
+            <i data-lucide="star" class="w-4 h-4 mr-2"></i>
             Trusted by 1000+ Job Seekers
           </span>
           <h1 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            We Apply to Jobs{" "}
+            Job Application
             <span class="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-              For You
+              Made Easy
             </span>
           </h1>
           <p class="text-xl text-white/90 mb-8 leading-relaxed">
-            Get hired faster with our expert application services. We take the hassle out of job searching by applying to 20-30 quality positions weekly.
+            Stop spending hours on job applications. We apply to 20-30 quality positions weekly while you focus on networking and interview prep.
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-            <a href="/get-started" class="inline-flex items-center bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-              Start Your Journey
-              <i data-lucide="check-circle" class="w-5 h-5 ml-2"></i>
-            </a>
-            <a href="https://zcal.co/jobsimplified/30min" target="_blank" class="inline-flex items-center bg-white/10 border border-white/30 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition-colors">
-              Schedule Call
+            <a href="/get-started" 
+               class="inline-flex items-center bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg">
+              <i data-lucide="arrow-right" class="w-5 h-5 mr-2"></i>
+              Get Started
             </a>
           </div>
         </div>
@@ -47,7 +39,7 @@
             </div>
             <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-6 text-center">
               <div class="text-3xl font-bold text-white mb-2">3 days</div>
-              <div class="text-white/80 text-sm">Average Response Time</div>
+              <div class="text-white/80 text-sm">Avg Response Time</div>
             </div>
             <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-6 text-center">
               <div class="text-3xl font-bold text-white mb-2">20-30</div>
@@ -63,62 +55,206 @@
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section id="how-it-works" class="py-20 bg-background">
+  <!-- What Sets AJFM Apart Section -->
+  <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+        <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          What Sets AJFM Apart
+        </h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          We're not just another job board. We're your personal application team.
+        </p>
+      </div>
+      
+      <div class="grid lg:grid-cols-2 gap-8 mb-16">
+        <div class="bg-gradient-subtle rounded-lg p-8 border border-gray-200">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">What AJFM Does</h3>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5 text-success"></i>
+              <span class="text-gray-700">Applies to jobs on your behalf</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5 text-success"></i>
+              <span class="text-gray-700">Customizes applications for each role</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5 text-success"></i>
+              <span class="text-gray-700">Tracks responses and interviews</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="check-circle" class="w-5 h-5 text-success"></i>
+              <span class="text-gray-700">Provides weekly progress reports</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="bg-gradient-subtle rounded-lg p-8 border border-gray-200">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Traditional Job Search</h3>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3">
+              <i data-lucide="x-circle" class="w-5 h-5 text-red-500"></i>
+              <span class="text-gray-700">Manual application process</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="x-circle" class="w-5 h-5 text-red-500"></i>
+              <span class="text-gray-700">Generic applications</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="x-circle" class="w-5 h-5 text-red-500"></i>
+              <span class="text-gray-700">No tracking system</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i data-lucide="x-circle" class="w-5 h-5 text-red-500"></i>
+              <span class="text-gray-700">Time-consuming process</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          Features Built for Ease of Use
+        </h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Everything you need to land your dream job, simplified.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white rounded-lg p-6 shadow-card-custom hover:shadow-card-hover transition-shadow-smooth">
+          <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="refresh-cw" class="w-6 h-6 text-primary-600"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Weekly Reviews</h3>
+          <p class="text-gray-600 text-sm">Get detailed reports every week on applications submitted and responses received.</p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-6 shadow-card-custom hover:shadow-card-hover transition-shadow-smooth">
+          <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="file-text" class="w-6 h-6 text-primary-600"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Job Description Based Resume Edit</h3>
+          <p class="text-gray-600 text-sm">We customize your resume for each specific job description to maximize your chances.</p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-6 shadow-card-custom hover:shadow-card-hover transition-shadow-smooth">
+          <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="share-2" class="w-6 h-6 text-primary-600"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Easy Job Sharing</h3>
+          <p class="text-gray-600 text-sm">Simply share new job opportunities from LinkedIn and we'll handle the applications.</p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-6 shadow-card-custom hover:shadow-card-hover transition-shadow-smooth">
+          <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="message-circle" class="w-6 h-6 text-primary-600"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Recruiter Cold Messages</h3>
+          <p class="text-gray-600 text-sm">We send personalized cold messages to recruiters to increase your visibility.</p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-6 shadow-card-custom hover:shadow-card-hover transition-shadow-smooth">
+          <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="users" class="w-6 h-6 text-primary-600"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Human Touch</h3>
+          <p class="text-gray-600 text-sm">Real people, not bots, handle your applications with personalized attention.</p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-6 shadow-card-custom hover:shadow-card-hover transition-shadow-smooth">
+          <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="target" class="w-6 h-6 text-primary-600"></i>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Quality Over Quantity</h3>
+          <p class="text-gray-600 text-sm">We focus on relevant, high-quality opportunities that match your career goals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
           How It Works
         </h2>
-        <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
-          Our simple 3-step process to get you hired faster
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Get started in 3 simple steps. No complicated processes, just results.
         </p>
       </div>
       <div class="grid md:grid-cols-3 gap-8 mb-16">
-        <div class="bg-gradient-card shadow-card-custom hover:shadow-card-hover transition-shadow-smooth rounded-lg p-6 text-center">
-          <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-            <i data-lucide="calendar" class="w-6 h-6 text-primary"></i>
+        <div class="bg-gradient-subtle rounded-lg p-8 text-center relative border border-gray-200">
+          <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            <div class="bg-primary-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">1</div>
           </div>
-          <h3 class="text-xl font-semibold mb-2">Schedule a Call</h3>
-          <p class="text-muted-foreground">Book a consultation to discuss your job search goals.</p>
+          <div class="w-16 h-16 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-6 mt-4">
+            <i data-lucide="phone" class="w-8 h-8 text-primary-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Submit Your Details</h3>
+          <p class="text-gray-600 mb-6">Provide your resume and career preferences. We'll customize everything for you.</p>
+          <a href="/get-started" 
+             class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium">
+            Get Started
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+          </a>
         </div>
         
-        <div class="bg-gradient-card shadow-card-custom hover:shadow-card-hover transition-shadow-smooth rounded-lg p-6 text-center">
-          <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-            <i data-lucide="upload" class="w-6 h-6 text-primary"></i>
+        <div class="bg-gradient-subtle rounded-lg p-8 text-center relative border border-gray-200">
+          <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            <div class="bg-primary-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">2</div>
           </div>
-          <h3 class="text-xl font-semibold mb-2">Fill Details & Upload Resume</h3>
-          <p class="text-muted-foreground">Provide us with your information and current resume.</p>
+          <div class="w-16 h-16 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-6 mt-4">
+            <i data-lucide="upload" class="w-8 h-8 text-primary-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">We Apply for You</h3>
+          <p class="text-gray-600 mb-6">Our team applies to 20-30 quality positions weekly with customized applications.</p>
+          <span class="inline-flex items-center text-success font-medium">
+            <i data-lucide="check-circle" class="w-4 h-4 mr-1"></i>
+            Automated Process
+          </span>
         </div>
         
-        <div class="bg-gradient-card shadow-card-custom hover:shadow-card-hover transition-shadow-smooth rounded-lg p-6 text-center">
-          <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-            <i data-lucide="bell" class="w-6 h-6 text-primary"></i>
+        <div class="bg-gradient-subtle rounded-lg p-8 text-center relative border border-gray-200">
+          <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            <div class="bg-primary-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">3</div>
           </div>
-          <h3 class="text-xl font-semibold mb-2">Get Notified</h3>
-          <p class="text-muted-foreground">Receive regular updates on the jobs we've applied to on your behalf.</p>
+          <div class="w-16 h-16 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-6 mt-4">
+            <i data-lucide="bell" class="w-8 h-8 text-primary-600"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Get Regular Updates</h3>
+          <p class="text-gray-600 mb-6">Receive weekly reports on applications submitted and responses received. Focus on networking and interviews.</p>
+          <span class="inline-flex items-center text-success font-medium">
+            <i data-lucide="check-circle" class="w-4 h-4 mr-1"></i>
+            Weekly Reports
+          </span>
         </div>
-        
-
       </div>
 
       <!-- Pricing Section -->
       <div id="pricing" class="text-center mb-16 pt-16">
-        <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-          Invest in Your Career, Not in Paperwork
+        <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          Invest in Your Career, Not Paperwork
         </h2>
-        <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
-          Stop spending 10+ minutes on each application. Our human assistants apply on your behalf while you focus on Networking and Interview Prep.
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
+          Stop spending 10+ minutes on each application. Our human assistants apply on your behalf while you focus on what matters.
         </p>
-        <p class="text-lg text-muted-foreground mt-4">
-          Split into 4 installments with <span class="text-primary font-semibold">Klarna.</span>
+        <p class="text-lg text-gray-600">
+          Split into 4 installments with <span class="text-primary-600 font-semibold">Klarna.</span>
         </p>
       </div>
       <div class="grid md:grid-cols-3 gap-6">
-        <div class="bg-gradient-card shadow-card-custom hover:shadow-card-hover transition-shadow-smooth rounded-lg p-6 text-center">
-          <div class="text-3xl font-bold text-primary mb-2">Basic</div>
+        <div class="bg-white shadow-card-custom hover:shadow-card-hover transition-shadow-smooth rounded-lg p-6 text-center border border-gray-200">
+          <div class="text-3xl font-bold text-primary-600 mb-2">Basic</div>
           <div class="text-4xl font-bold mb-2">$199</div>
-          <div class="text-sm text-muted-foreground mb-6">One-Time Payment</div>
+          <div class="text-sm text-gray-600 mb-6">One-Time Payment</div>
           <ul class="space-y-3 mb-6 text-left text-sm">
             <li class="flex items-center gap-2">
               <i data-lucide="check-circle" class="w-4 h-4 text-success"></i>
@@ -128,33 +264,36 @@
               <i data-lucide="check-circle" class="w-4 h-4 text-success"></i>
               1 Human Assistant
             </li>
-            <li class="flex items-center gap-2 text-muted-foreground/60">
-              <span class="w-4 h-4 rounded-full border-2 border-muted-foreground/30"></span>
+            <li class="flex items-center gap-2 text-gray-400">
+              <span class="w-4 h-4 rounded-full border-2 border-gray-300"></span>
               Custom Cover Letters
             </li>
-            <li class="flex items-center gap-2 text-muted-foreground/60">
-              <span class="w-4 h-4 rounded-full border-2 border-muted-foreground/30"></span>
+            <li class="flex items-center gap-2 text-gray-400">
+              <span class="w-4 h-4 rounded-full border-2 border-gray-300"></span>
               AI Custom Resumes
             </li>
-            <li class="flex items-center gap-2 text-muted-foreground/60">
-              <span class="w-4 h-4 rounded-full border-2 border-muted-foreground/30"></span>
+            <li class="flex items-center gap-2 text-gray-400">
+              <span class="w-4 h-4 rounded-full border-2 border-gray-300"></span>
               Resume Review
             </li>
-            <li class="flex items-center gap-2 text-muted-foreground/60">
-              <span class="w-4 h-4 rounded-full border-2 border-muted-foreground/30"></span>
+            <li class="flex items-center gap-2 text-gray-400">
+              <span class="w-4 h-4 rounded-full border-2 border-gray-300"></span>
               LinkedIn Makeover
             </li>
           </ul>
-          <button class="w-full border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors">Select Plan</button>
+          <a href="/get-started" 
+             class="w-full border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors inline-block">
+            Get Started
+          </a>
         </div>
 
-        <div class="bg-gradient-card shadow-card-custom hover:shadow-card-hover transition-shadow-smooth rounded-lg p-6 text-center">
-          <div class="text-3xl font-bold text-primary mb-2">Standard</div>
+        <div class="bg-white shadow-card-custom hover:shadow-card-hover transition-shadow-smooth rounded-lg p-6 text-center border border-gray-200">
+          <div class="text-3xl font-bold text-primary-600 mb-2">Standard</div>
           <div class="flex items-center justify-center gap-2 mb-2">
             <span class="text-4xl font-bold">$299</span>
-            <span class="text-lg text-muted-foreground line-through">$400</span>
+            <span class="text-lg text-gray-500 line-through">$400</span>
           </div>
-          <div class="text-sm text-muted-foreground mb-6">One-Time Payment</div>
+          <div class="text-sm text-gray-600 mb-6">One-Time Payment</div>
           <ul class="space-y-3 mb-6 text-left text-sm">
             <li class="flex items-center gap-2">
               <i data-lucide="check-circle" class="w-4 h-4 text-success"></i>
@@ -168,32 +307,35 @@
               <i data-lucide="check-circle" class="w-4 h-4 text-success"></i>
               Custom Cover Letters
             </li>
-            <li class="flex items-center gap-2 text-muted-foreground/60">
-              <span class="w-4 h-4 rounded-full border-2 border-muted-foreground/30"></span>
+            <li class="flex items-center gap-2 text-gray-400">
+              <span class="w-4 h-4 rounded-full border-2 border-gray-300"></span>
               AI Custom Resumes
             </li>
-            <li class="flex items-center gap-2 text-muted-foreground/60">
-              <span class="w-4 h-4 rounded-full border-2 border-muted-foreground/30"></span>
+            <li class="flex items-center gap-2 text-gray-400">
+              <span class="w-4 h-4 rounded-full border-2 border-gray-300"></span>
               Resume Review
             </li>
-            <li class="flex items-center gap-2 text-muted-foreground/60">
-              <span class="w-4 h-4 rounded-full border-2 border-muted-foreground/30"></span>
+            <li class="flex items-center gap-2 text-gray-400">
+              <span class="w-4 h-4 rounded-full border-2 border-gray-300"></span>
               LinkedIn Makeover
             </li>
           </ul>
-          <button class="w-full border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors">Select Plan</button>
+          <a href="/get-started" 
+             class="w-full border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors inline-block">
+            Get Started
+          </a>
         </div>
 
-        <div class="bg-gradient-card shadow-card-custom hover:shadow-card-hover transition-shadow-smooth rounded-lg p-6 text-center border-primary relative">
+        <div class="bg-white shadow-card-custom hover:shadow-card-hover transition-shadow-smooth rounded-lg p-6 text-center border-2 border-primary-600 relative">
           <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-            <span class="bg-primary text-white px-3 py-1 rounded-full text-sm">MOST POPULAR</span>
+            <span class="bg-primary-600 text-white px-3 py-1 rounded-full text-sm">MOST POPULAR</span>
           </div>
-          <div class="text-3xl font-bold text-primary mb-2">Best Value!</div>
+          <div class="text-3xl font-bold text-primary-600 mb-2">Best Value!</div>
           <div class="flex items-center justify-center gap-2 mb-2">
             <span class="text-4xl font-bold">$399</span>
-            <span class="text-lg text-muted-foreground line-through">$800</span>
+            <span class="text-lg text-gray-500 line-through">$800</span>
           </div>
-          <div class="text-sm text-muted-foreground mb-6">One-Time Payment</div>
+          <div class="text-sm text-gray-600 mb-6">One-Time Payment</div>
           <ul class="space-y-3 mb-6 text-left text-sm">
             <li class="flex items-center gap-2">
               <i data-lucide="check-circle" class="w-4 h-4 text-success"></i>
@@ -207,36 +349,39 @@
               <i data-lucide="check-circle" class="w-4 h-4 text-success"></i>
               Custom Cover Letters
             </li>
-            <li class="flex items-center gap-2 text-muted-foreground/60">
-              <span class="w-4 h-4 rounded-full border-2 border-muted-foreground/30"></span>
+            <li class="flex items-center gap-2 text-gray-400">
+              <span class="w-4 h-4 rounded-full border-2 border-gray-300"></span>
               AI Custom Resumes
             </li>
-            <li class="flex items-center gap-2 text-muted-foreground/60">
-              <span class="w-4 h-4 rounded-full border-2 border-muted-foreground/30"></span>
+            <li class="flex items-center gap-2 text-gray-400">
+              <span class="w-4 h-4 rounded-full border-2 border-gray-300"></span>
               Resume Review
             </li>
-            <li class="flex items-center gap-2 text-muted-foreground/60">
-              <span class="w-4 h-4 rounded-full border-2 border-muted-foreground/30"></span>
+            <li class="flex items-center gap-2 text-gray-400">
+              <span class="w-4 h-4 rounded-full border-2 border-gray-300"></span>
               LinkedIn Makeover
             </li>
           </ul>
-          <button class="w-full bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition-colors">Select Plan</button>
+          <a href="/get-started" 
+             class="w-full bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 transition-colors inline-block">
+            Get Started
+          </a>
         </div>
       </div>
-      <div class="text-center text-sm text-muted-foreground mt-8">
+      <div class="text-center text-sm text-gray-600 mt-8">
         *Pro-rata refunds are NOT applicable on Resume Review and LinkedIn Makeover as they are a one-time effort from Career Coaches and Experts.
       </div>
     </div>
   </section>
 
   <!-- Testimonials Section -->
-  <section class="py-20 bg-muted/30">
+  <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+        <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
           What Our Clients Say
         </h2>
-        <p class="text-xl text-muted-foreground">
+        <p class="text-xl text-gray-600">
           Real success stories from professionals who transformed their careers with our help.
         </p>
       </div>
@@ -256,11 +401,10 @@
         Join thousands of professionals who have accelerated their careers with our expert application services.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/get-started" class="inline-flex items-center bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-          Start Your Journey Today
-        </a>
-        <a href="https://zcal.co/jobsimplified/30min" target="_blank" class="inline-flex items-center border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition-colors">
-          Schedule Free Call
+        <a href="/get-started" 
+           class="inline-flex items-center bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+          <i data-lucide="arrow-right" class="w-5 h-5 mr-2"></i>
+          Get Started
         </a>
       </div>
     </div>
