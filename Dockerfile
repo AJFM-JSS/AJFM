@@ -16,6 +16,7 @@ RUN apt-get update \
         g++ \
         libffi-dev \
         libssl-dev \
+        curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
