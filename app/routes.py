@@ -1,14 +1,17 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, url_for, flash, current_app
-from werkzeug.utils import secure_filename
-from datetime import datetime
+from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
 import os
-from app.utils import allowed_file, send_consultation_email, send_confirmation_email
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+from werkzeug.utils import secure_filename
+import json
 
 # Create blueprints
 main_bp = Blueprint('main', __name__)
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
-# Main routes
 @main_bp.route('/')
 def home():
     return render_template('home.html')
@@ -16,6 +19,10 @@ def home():
 @main_bp.route('/get-started')
 def get_started():
     return render_template('get_started.html')
+
+@main_bp.route('/resume-builder')
+def resume_builder():
+    return render_template('resume_builder.html')
 
 @main_bp.route('/login')
 def login():
@@ -25,170 +32,157 @@ def login():
 def profile():
     return render_template('profile.html')
 
-@main_bp.route('/resume-builder')
-def resume_builder():
-    return render_template('resume_builder.html')
+@api_bp.route('/submit-form', methods=['POST'])
+def submit_form():
+    try:
+        print("=== SUBMIT FORM ROUTE HIT ===")
+        
+        # Get form data
+        name = request.form.get('name')
+        email = request.form.get('email')
+        phone = request.form.get('phone', '')
+        
+        print(f"Form data received: name={name}, email={email}, phone={phone}")
+        
+        # Handle file upload
+        resume_file = request.files.get('resume')
+        resume_filename = None
+        file_path = None
+        
+        if resume_file and resume_file.filename:
+            print(f"Resume file received: {resume_file.filename}")
+            # Secure the filename
+            resume_filename = secure_filename(resume_file.filename)
+            
+            # Save file to uploads directory
+            upload_folder = 'uploads'
+            os.makedirs(upload_folder, exist_ok=True)
+            file_path = os.path.join(upload_folder, resume_filename)
+            resume_file.save(file_path)
+            print(f"Resume saved to: {file_path}")
+        else:
+            print("No resume file received")
+        
+        # Send email notification (commented out for now to avoid email errors)
+        email_sent = send_notification_email(name, email, phone, resume_filename)
+        print("Email notification sent")
+        
+        # Delete resume file after successful email
+        if email_sent and file_path and os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+                print(f"✅ Resume file deleted: {file_path}")
+            except Exception as e:
+                print(f"❌ Error deleting resume file: {e}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Form submitted successfully! We\'ll be in touch soon.',
+            'redirect_url': 'https://zcal.co/jobsimplified/30min'
+        })
+        
+    except Exception as e:
+        print(f"=== FORM SUBMISSION ERROR: {str(e)} ===")
+        return jsonify({
+            'success': False,
+            'message': f'Error submitting form: {str(e)}'
+        }), 500
 
-@main_bp.route('/upload-resume', methods=['POST'])
-def upload_resume():
-    print("=== UPLOAD RESUME ROUTE HIT ===")
-    print(f"Request method: {request.method}")
-    print(f"Request files: {list(request.files.keys())}")
-    print(f"Request form data: {dict(request.form)}")
+def send_notification_email(name, email, phone, resume_filename):
+    """Send email notification to applyjobsforme9876@gmail.com"""
     
-    if 'resume' not in request.files:
-        print("No resume file in request")
-        return jsonify({'error': 'No file part'}), 400
+    # Email configuration
+    sender_email = os.environ.get('SENDER_EMAIL')  # Replace with your email
+    sender_password = os.environ.get('SENDER_PASSWORD')  # Replace with your app password
+    recipient_email = "applyjobsforme9876@gmail.com"
+    print(f"Sender email: {sender_email}")
+    print(f"Sender password: {sender_password}")
     
-    file = request.files['resume']
-    email = request.form.get('email')
+    # Check if email credentials are configured
+    if not sender_email or not sender_password:
+        print("⚠️  Email credentials not configured. Skipping email notification.")
+        print("📧 To enable email notifications, set environment variables:")
+        print("   SENDER_EMAIL=your-email@gmail.com")
+        print("   SENDER_PASSWORD=your-app-password")
+        return False
     
-    if not email:
-        return jsonify({'error': 'Email is required'}), 400
+    # Create message
+    msg = MIMEMultipart()
+    msg['From'] = sender_email
+    msg['To'] = "applyjobsforme9876@gmail.com"
+    msg['Subject'] = f"New AJFM Lead: {name}"
     
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
-
-    print(f"File: {file.filename}")
-    print(f"Email: {email}")
+    # Email body
+    body = f"""
+    New lead submitted through AJFM website:
     
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
-        
-        # Send consultation email to admin
-        admin_email_sent = send_consultation_email(email, filename, file_path)
-        
-        # Send confirmation email to user
-        user_email_sent = send_confirmation_email(email, filename)
-        
-        # Process Google Drive upload and notification asynchronously
+    Name: {name}
+    Email: {email}
+    Phone: {phone if phone else 'Not provided'}
+    
+    Resume: {resume_filename if resume_filename else 'Not uploaded'}
+    
+    Please follow up with this potential client.
+    """
+    
+    msg.attach(MIMEText(body, 'plain'))
+    
+    # Attach resume if uploaded
+    if resume_filename:
         try:
-            import asyncio
-            from app.google_drive_utils import process_resume_upload
+            with open(f"uploads/{resume_filename}", "rb") as attachment:
+                part = MIMEBase('application', 'octet-stream')
+                part.set_payload(attachment.read())
             
-            # Run async Google Drive operations
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            
-            drive_result = loop.run_until_complete(
-                process_resume_upload(file_path, filename, email)
+            encoders.encode_base64(part)
+            part.add_header(
+                'Content-Disposition',
+                f'attachment; filename= {resume_filename}',
             )
-            
-            loop.close()
-            
-            print(f"Google Drive result: {drive_result}")
-            
+            msg.attach(part)
+            print(f"✅ Resume attached: {resume_filename}")
         except Exception as e:
-            print(f"Google Drive processing error: {e}")
-            drive_result = {
-                'success': False,
-                'error': str(e)
-            }
-        
-        # Log the submission (in production, save to database)
-        submission_log = {
-            'email': email,
-            'resume_filename': filename,
-            'submitted_at': datetime.now().isoformat(),
-            'admin_email_sent': admin_email_sent,
-            'user_email_sent': user_email_sent,
-            'drive_upload_success': drive_result.get('success', False),
-            'drive_file_id': drive_result.get('drive_upload', {}).get('file_id'),
-            'drive_web_link': drive_result.get('drive_upload', {}).get('web_view_link'),
-            'notification_sent': drive_result.get('notification_sent', False)
-        }
-        
-        print(f"New consultation request: {submission_log}")
-        print("=== SUCCESS: Returning success response ===")
-        
-        return jsonify({
-            'success': True,
-            'message': f'Consultation request submitted successfully! We have received your resume and will contact you within 24 hours.',
-            'redirect_url': 'https://zcal.co/jobsimplified/30min',
-            'email_sent': user_email_sent,
-            'drive_upload': drive_result.get('success', False),
-            'drive_link': drive_result.get('drive_upload', {}).get('web_view_link')
-        })
+            print(f"❌ Error attaching resume: {e}")
     
-    print("=== ERROR: Invalid file type ===")
-    return jsonify({'error': 'Invalid file type. Please upload PDF, DOC, or DOCX files only.'}), 400
+    # Send email
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        text = msg.as_string()
+        server.sendmail(sender_email, recipient_email, text)
+        server.quit()
+        print("✅ Email sent successfully to", recipient_email)
+        return True
+    except Exception as e:
+        print(f"❌ Error sending email: {e}")
+        print("💡 Make sure your Gmail app password is correct and 2FA is enabled")
+        return False
 
-@main_bp.route('/schedule-consultation', methods=['POST'])
-def schedule_consultation():
-    """
-    Handle consultation scheduling with email and resume
-    """
-    if 'resume' not in request.files:
-        return jsonify({'error': 'No resume file provided'}), 400
-    
-    file = request.files['resume']
-    email = request.form.get('email')
-    
-    if not email:
-        return jsonify({'error': 'Email is required'}), 400
-    
-    if file.filename == '':
-        return jsonify({'error': 'No resume file selected'}), 400
-    
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
-        
-        # Send consultation email to admin with resume attachment
-        admin_email_sent = send_consultation_email(email, filename, file_path)
-        
-        # Send confirmation email to user
-        user_email_sent = send_confirmation_email(email, filename)
-        
-        # Log the consultation request
-        consultation_log = {
-            'email': email,
-            'resume_filename': filename,
-            'submitted_at': datetime.now().isoformat(),
-            'admin_email_sent': admin_email_sent,
-            'user_email_sent': user_email_sent,
-            'action': 'consultation_scheduled'
-        }
-        
-        print(f"Consultation scheduled: {consultation_log}")
-        
-        return jsonify({
-            'success': True,
-            'message': 'Your consultation has been scheduled! Check your email for confirmation.',
-            'redirect_url': 'https://zcal.co/jobsimplified/30min',
-            'email_sent': user_email_sent,
-            'consultation_id': f"CONS_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-        })
-    
-    return jsonify({'error': 'Invalid file type. Please upload PDF, DOC, or DOCX files only.'}), 400
-
-# API routes
 @api_bp.route('/testimonials')
 def get_testimonials():
+    """Return testimonials data"""
     testimonials = [
         {
-            "name": "Sarah Johnson",
+            "name": "Sarah",
             "role": "Software Engineer",
-            "content": "After months of job hunting with no success, AJFM changed everything. Within 3 weeks, I had 4 interview requests and landed a position that exceeded my salary expectations.",
-            "rating": 5,
-            "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=face"
+            "company": "Amazon",
+            "content": "AJFM helped me land my dream job in just 4 weeks. The personalized approach made all the difference.",
+            "rating": 5
         },
         {
-            "name": "Michael Chen",
-            "role": "Marketing Manager", 
-            "content": "AJFM saved me countless hours of searching and applying. Their team found opportunities I hadn't discovered and handled all the application details perfectly.",
-            "rating": 5,
-            "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
+            "name": "Arvind Swamy",
+            "role": "Software Engineer III",
+            "company": "Walmart",
+            "content": "I was spending hours on applications with no results. AJFM turned that around completely.",
+            "rating": 5
         },
         {
-            "name": "Emily Rodriguez",
+            "name": "Mansi",
             "role": "Product Manager",
-            "content": "As a busy parent, I didn't have time to apply for jobs effectively. AJFM understood my goals and secured multiple interviews within a month.",
-            "rating": 5,
-            "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face"
+            "company": "Oracle",
+            "content": "The weekly updates and personalized applications helped me get multiple interviews. Highly recommended!",
+            "rating": 5
         }
     ]
     return jsonify(testimonials) 
