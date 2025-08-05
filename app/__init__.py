@@ -1,9 +1,13 @@
 from flask import Flask
 import os
+from dotenv import load_dotenv
 from config import EMAIL_CONFIG
 
 def create_app():
     """Application factory pattern for creating Flask app"""
+    # Load environment variables from .env file
+    load_dotenv()
+    
     # Get the root directory (where templates and static folders are located)
     root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
